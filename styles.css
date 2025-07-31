@@ -100,23 +100,40 @@ body.rtl .controls {
     background: #f8f9fa;
     border-radius: 8px;
     border: 1px solid #dee2e6;
+    text-align: center;
 }
 
 .standard-selector label {
-    margin-right: 15px;
+    margin: 0 10px;
     cursor: pointer;
     font-weight: 500;
     color: #495057;
     transition: color 0.3s ease;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
 .standard-selector label:hover {
     color: #2196F3;
+    background-color: #e3f2fd;
 }
 
 .standard-selector input[type="radio"] {
+    margin-left: 5px;
     margin-right: 5px;
     transform: scale(1.2);
+}
+
+/* RTL Support for Persian */
+body.rtl .standard-selector label {
+    margin: 0 10px;
+}
+
+body.rtl .standard-selector input[type="radio"] {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .cable-workspace {

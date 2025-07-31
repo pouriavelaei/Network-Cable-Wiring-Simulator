@@ -319,6 +319,7 @@ class NetworkCableSimulator {
                 
                 // Update body direction and language
                 document.body.style.direction = this.currentLanguage === 'fa' ? 'rtl' : 'ltr';
+                document.body.className = this.currentLanguage === 'fa' ? 'rtl' : '';
                 document.documentElement.lang = this.currentLanguage;
                 
                 // Update device names and connection info
