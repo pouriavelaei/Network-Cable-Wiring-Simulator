@@ -1,6 +1,8 @@
 # 🧰 Network Cabling Simulator
 
-**Network Cabling Simulator** is a hands-on, browser-based educational tool designed to help users practice and learn network cable wiring standards like **T568A**, **T568B**, and **Crossover**. With an intuitive visual interface and interactive features, it’s perfect for students, enthusiasts, and anyone interested in networking.
+![Network Cabling Simulator Overview](img.png)
+
+**Network Cabling Simulator** is a hands-on, browser-based educational tool designed to help users practice and learn network cable wiring standards like **T568A**, **T568B**, and **Crossover**. With an intuitive visual interface and interactive features, it's perfect for students, enthusiasts, and anyone interested in networking.
 
 ---
 
