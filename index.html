@@ -3,30 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Cable Wiring Game</title>
+    <meta name="description" content="Interactive network cable wiring simulator for learning RJ45 connector standards T568A, T568B, and crossover cables. Perfect for networking students and professionals.">
+    <meta name="keywords" content="RJ45, network cable, wiring, T568A, T568B, crossover, networking, training, simulator">
+    <meta name="author" content="Pouria Velaei">
+    <title>Network Cable Wiring Simulator - Interactive RJ45 Training Tool</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="rj45.png">
+    <link rel="icon" type="image/png" href="rj45.png" alt="RJ45 connector icon">
     <script src="script.js"></script>
 </head>
 <body>
         <div class="container">
-        <div class="header">
+        <header class="header" role="banner">
             <h1 id="headerTitle">🔌 Network Cable Wiring Simulator</h1>
             <p id="headerSubtitle">Practical Training for Network Device Connections</p>
-            <div class="language-toggle" id="languageToggle">🌐 فارسی</div>
-            <div class="sound-toggle" id="soundToggle">🔊 Sound</div>
-        </div>
+            <nav role="navigation" aria-label="Language and sound controls">
+                <button class="language-toggle" id="languageToggle" aria-label="Switch language to Persian">🌐 فارسی</button>
+                <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound effects">🔊 Sound</button>
+            </nav>
+        </header>
         
-        <div class="game-area">
+        <main class="game-area" role="main" aria-label="Network cable wiring game interface">
             <!-- Difficulty Selector -->
-            <div class="difficulty-selector">
+            <section class="difficulty-selector" role="group" aria-labelledby="difficultyTitle">
                 <h3 id="difficultyTitle">Select Game Level</h3>
-                <div class="difficulty-buttons">
-                    <button class="difficulty-btn easy active" data-level="easy" id="easyBtn">Easy (No Timer)</button>
-                    <button class="difficulty-btn medium" data-level="medium" id="mediumBtn">Medium (5 Minutes)</button>
-                    <button class="difficulty-btn hard" data-level="hard" id="hardBtn">Hard (3 Minutes)</button>
+                <div class="difficulty-buttons" role="radiogroup" aria-labelledby="difficultyTitle">
+                    <button class="difficulty-btn easy active" data-level="easy" id="easyBtn" role="radio" aria-checked="true" aria-describedby="easy-desc">Easy (No Timer)</button>
+                    <button class="difficulty-btn medium" data-level="medium" id="mediumBtn" role="radio" aria-checked="false" aria-describedby="medium-desc">Medium (5 Minutes)</button>
+                    <button class="difficulty-btn hard" data-level="hard" id="hardBtn" role="radio" aria-checked="false" aria-describedby="hard-desc">Hard (3 Minutes)</button>
                 </div>
-            </div>
+                <!-- Hidden descriptions for screen readers -->
+                <div id="easy-desc" class="sr-only">Easy mode with no time limit for free practice</div>
+                <div id="medium-desc" class="sr-only">Medium difficulty with 5 minute timer</div>
+                <div id="hard-desc" class="sr-only">Hard difficulty with 3 minute timer for advanced users</div>
+            </section>
 
             <!-- Timer Panel -->
             <div class="timer-panel" id="timerPanel" style="display: none;">
@@ -45,29 +54,31 @@
                     <div class="progress-text" id="progressText">0%</div>
                 </div>
             </div>
-            <div class="device-selection">
+            <section class="device-selection" role="group" aria-label="Device selection for cable connection">
                 <div class="device-selector">
                     <h3 id="device1Title">First Device</h3>
-                    <select class="device-dropdown" id="device1">
+                    <select class="device-dropdown" id="device1" aria-labelledby="device1Title" aria-describedby="device1-help">
                         <option value="router" id="router1">Router</option>
                         <option value="switch" id="switch1">Switch</option>
                         <option value="pc" id="pc1">Computer (PC)</option>
                         <option value="server" id="server1">Server</option>
                     </select>
+                    <div id="device1-help" class="sr-only">Select the first network device for connection</div>
                 </div>
                 
-                <div style="font-size: 24px; color: #666;">⟷</div>
+                <div style="font-size: 24px; color: #666;" aria-hidden="true">⟷</div>
                 
                 <div class="device-selector">
                     <h3 id="device2Title">Second Device</h3>
-                    <select class="device-dropdown" id="device2">
+                    <select class="device-dropdown" id="device2" aria-labelledby="device2Title" aria-describedby="device2-help">
                         <option value="switch" id="switch2">Switch</option>
                         <option value="router" id="router2">Router</option>
                         <option value="pc" id="pc2">Computer (PC)</option>
                         <option value="server" id="server2">Server</option>
                     </select>
+                    <div id="device2-help" class="sr-only">Select the second network device for connection</div>
                 </div>
-            </div>
+            </section>
 
             <div class="connection-info" id="connectionInfo">
                 <strong id="connectionTypeLabel">Connection Type:</strong> <span id="cableType">Straight-Through</span><br>
@@ -94,29 +105,29 @@
                     <div class="socket-label" id="socket1Label">First Connector</div>
                     <div class="socket-body">
                         <div class="socket-opening">
-                            <div class="pin-container" id="socket1">
-                                <div class="pin pin-drop-zone" data-pin="1">
+                            <div class="pin-container" id="socket1" role="group" aria-label="First RJ45 connector pins">
+                                <div class="pin pin-drop-zone" data-pin="1" role="button" tabindex="0" aria-label="Pin 1 - Drop zone for wire connection" aria-describedby="pin1-help">
                                     <div class="pin-number">1</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="2">
+                                <div class="pin pin-drop-zone" data-pin="2" role="button" tabindex="0" aria-label="Pin 2 - Drop zone for wire connection" aria-describedby="pin2-help">
                                     <div class="pin-number">2</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="3">
+                                <div class="pin pin-drop-zone" data-pin="3" role="button" tabindex="0" aria-label="Pin 3 - Drop zone for wire connection" aria-describedby="pin3-help">
                                     <div class="pin-number">3</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="4">
+                                <div class="pin pin-drop-zone" data-pin="4" role="button" tabindex="0" aria-label="Pin 4 - Drop zone for wire connection" aria-describedby="pin4-help">
                                     <div class="pin-number">4</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="5">
+                                <div class="pin pin-drop-zone" data-pin="5" role="button" tabindex="0" aria-label="Pin 5 - Drop zone for wire connection" aria-describedby="pin5-help">
                                     <div class="pin-number">5</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="6">
+                                <div class="pin pin-drop-zone" data-pin="6" role="button" tabindex="0" aria-label="Pin 6 - Drop zone for wire connection" aria-describedby="pin6-help">
                                     <div class="pin-number">6</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="7">
+                                <div class="pin pin-drop-zone" data-pin="7" role="button" tabindex="0" aria-label="Pin 7 - Drop zone for wire connection" aria-describedby="pin7-help">
                                     <div class="pin-number">7</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="8">
+                                <div class="pin pin-drop-zone" data-pin="8" role="button" tabindex="0" aria-label="Pin 8 - Drop zone for wire connection" aria-describedby="pin8-help">
                                     <div class="pin-number">8</div>
                                 </div>
                             </div>
@@ -134,29 +145,29 @@
                     <div class="socket-label" id="socket2Label">Second Connector</div>
                     <div class="socket-body">
                         <div class="socket-opening">
-                            <div class="pin-container" id="socket2">
-                                <div class="pin pin-drop-zone" data-pin="1">
+                            <div class="pin-container" id="socket2" role="group" aria-label="Second RJ45 connector pins">
+                                <div class="pin pin-drop-zone" data-pin="1" role="button" tabindex="0" aria-label="Pin 1 - Drop zone for wire connection" aria-describedby="pin1-help-2">
                                     <div class="pin-number">1</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="2">
+                                <div class="pin pin-drop-zone" data-pin="2" role="button" tabindex="0" aria-label="Pin 2 - Drop zone for wire connection" aria-describedby="pin2-help-2">
                                     <div class="pin-number">2</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="3">
+                                <div class="pin pin-drop-zone" data-pin="3" role="button" tabindex="0" aria-label="Pin 3 - Drop zone for wire connection" aria-describedby="pin3-help-2">
                                     <div class="pin-number">3</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="4">
+                                <div class="pin pin-drop-zone" data-pin="4" role="button" tabindex="0" aria-label="Pin 4 - Drop zone for wire connection" aria-describedby="pin4-help-2">
                                     <div class="pin-number">4</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="5">
+                                <div class="pin pin-drop-zone" data-pin="5" role="button" tabindex="0" aria-label="Pin 5 - Drop zone for wire connection" aria-describedby="pin5-help-2">
                                     <div class="pin-number">5</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="6">
+                                <div class="pin pin-drop-zone" data-pin="6" role="button" tabindex="0" aria-label="Pin 6 - Drop zone for wire connection" aria-describedby="pin6-help-2">
                                     <div class="pin-number">6</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="7">
+                                <div class="pin pin-drop-zone" data-pin="7" role="button" tabindex="0" aria-label="Pin 7 - Drop zone for wire connection" aria-describedby="pin7-help-2">
                                     <div class="pin-number">7</div>
                                 </div>
-                                <div class="pin pin-drop-zone" data-pin="8">
+                                <div class="pin pin-drop-zone" data-pin="8" role="button" tabindex="0" aria-label="Pin 8 - Drop zone for wire connection" aria-describedby="pin8-help-2">
                                     <div class="pin-number">8</div>
                                 </div>
                             </div>
@@ -190,14 +201,23 @@
                 </div>
             </div>
 
-            <div class="controls">
-                <button class="btn btn-success" id="checkBtn">Check Cable</button>
-                <button class="btn btn-primary" id="hintBtn">Hint</button>
-                <button class="btn btn-warning" id="resetBtn">Clear</button>
-                <button class="btn btn-danger" id="newCableBtn">New Cable</button>
-            </div>
+            <section class="controls" role="group" aria-label="Game control buttons">
+                <button class="btn btn-success" id="checkBtn" aria-describedby="check-help">Check Cable</button>
+                <button class="btn btn-primary" id="hintBtn" aria-describedby="hint-help">Hint</button>
+                <button class="btn btn-warning" id="resetBtn" aria-describedby="reset-help">Clear</button>
+                <button class="btn btn-danger" id="newCableBtn" aria-describedby="new-help">New Cable</button>
+                
+                <!-- Hidden descriptions for screen readers -->
+                <div id="check-help" class="sr-only">Verify if your cable wiring is correct</div>
+                <div id="hint-help" class="sr-only">Get a hint about correct wire placement</div>
+                <div id="reset-help" class="sr-only">Clear all wire connections</div>
+                <div id="new-help" class="sr-only">Start a new cable with random device selection</div>
+            </section>
 
-            <div id="message"></div>
+            <div id="message" role="status" aria-live="polite" aria-atomic="true"></div>
+            
+            <!-- ARIA live region for screen reader announcements -->
+            <div id="announcements" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
             
             <!-- GitHub Link -->
             <div class="github-link" style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #eee;">

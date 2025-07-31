@@ -944,3 +944,105 @@ body.rtl .standard-selector input[type="radio"] {
         min-width: 320px;
     }
 }
+
+/* Accessibility Improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus indicators for keyboard navigation */
+.pin:focus,
+.btn:focus,
+.device-dropdown:focus,
+.language-toggle:focus,
+.sound-toggle:focus,
+.difficulty-btn:focus {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 5px #007bff;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .pin {
+        border: 2px solid #000;
+    }
+    
+    .btn {
+        border: 2px solid #000;
+        font-weight: bold;
+    }
+    
+    .wire {
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Keyboard navigation for pins */
+.pin[tabindex="0"]:hover,
+.pin[tabindex="0"]:focus {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    cursor: pointer;
+}
+
+/* Button accessibility */
+.language-toggle,
+.sound-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.language-toggle:hover,
+.sound-toggle:hover,
+.language-toggle:focus,
+.sound-toggle:focus {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ARIA live region for announcements */
+.sr-live {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Better contrast for text */
+.score-label,
+.timer-label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Improved button states */
+.difficulty-btn[aria-checked="true"] {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
