@@ -31,9 +31,13 @@ class NetworkCableSimulator {
                 };
 
                 this.standards = {
+                    T568A: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown'],
                     T568B: ['White-Orange', 'Orange', 'White-Green', 'Blue', 'White-Blue', 'Green', 'White-Brown', 'Brown'],
                     CrossOver: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown']
                 };
+                
+                // Current selected standard for straight-through cables
+                this.selectedStandard = 'T568B';
 
                 this.currentDraggedWire = null;
                 this.init();
@@ -73,6 +77,11 @@ class NetworkCableSimulator {
                         // Connection Info
                         connectionTypeLabel: "Connection Type:",
                         recommendedStandardLabel: "Recommended Standard:",
+                        
+                        // Standard Selector
+                        standardSelectorLabel: "Choose Standard for Straight-Through:",
+                        standardT568ALabel: "T568A",
+                        standardT568BLabel: "T568B",
                         
                         // Sockets
                         socket1Label: "First Connector",
@@ -125,7 +134,8 @@ class NetworkCableSimulator {
                         
                         // Hints
                         hints: {
-                            straightThrough: "💡 For connecting {device1} to {device2} (Straight-Through):<br>• Both connectors must be T568B standard<br>• Pin order: <br>1️⃣ White-Orange | 2️⃣ Orange | 3️⃣ White-Green | 4️⃣ Blue<br>5️⃣ White-Blue | 6️⃣ Green | 7️⃣ White-Brown | 8️⃣ Brown",
+                            straightThroughT568A: "💡 For connecting {device1} to {device2} (Straight-Through T568A):<br>• Both connectors must be T568A standard<br>• Pin order: <br>1️⃣ White-Green | 2️⃣ Green | 3️⃣ White-Orange | 4️⃣ Blue<br>5️⃣ White-Blue | 6️⃣ Orange | 7️⃣ White-Brown | 8️⃣ Brown",
+                            straightThroughT568B: "💡 For connecting {device1} to {device2} (Straight-Through T568B):<br>• Both connectors must be T568B standard<br>• Pin order: <br>1️⃣ White-Orange | 2️⃣ Orange | 3️⃣ White-Green | 4️⃣ Blue<br>5️⃣ White-Blue | 6️⃣ Green | 7️⃣ White-Brown | 8️⃣ Brown",
                             crossOver: "💡 For connecting {device1} to {device2} (Cross-Over):<br>• First connector: T568B | Second connector: CrossOver<br>• Connector 1: White-Orange, Orange, White-Green, Blue, White-Blue, Green, White-Brown, Brown<br>• Connector 2: White-Green, Green, White-Orange, Blue, White-Blue, Orange, White-Brown, Brown<br>• Difference: Pins 1↔3 and 2↔6 are swapped"
                         },
                         
@@ -168,6 +178,11 @@ class NetworkCableSimulator {
                         // Connection Info
                         connectionTypeLabel: "نوع اتصال:",
                         recommendedStandardLabel: "استاندارد پیشنهادی:",
+                        
+                        // Standard Selector
+                        standardSelectorLabel: "انتخاب استاندارد برای Straight-Through:",
+                        standardT568ALabel: "T568A",
+                        standardT568BLabel: "T568B",
                         
                         // Sockets
                         socket1Label: "کانکتور اول",
@@ -220,7 +235,8 @@ class NetworkCableSimulator {
                         
                         // Hints
                         hints: {
-                            straightThrough: "💡 برای اتصال {device1} به {device2} (Straight-Through):<br>• هر دو کانکتور باید استاندارد T568B باشند<br>• ترتیب پین‌ها: <br>1️⃣ سفید-نارنجی | 2️⃣ نارنجی | 3️⃣ سفید-سبز | 4️⃣ آبی<br>5️⃣ سفید-آبی | 6️⃣ سبز | 7️⃣ سفید-قهوه‌ای | 8️⃣ قهوه‌ای",
+                            straightThroughT568A: "💡 برای اتصال {device1} به {device2} (Straight-Through T568A):<br>• هر دو کانکتور باید استاندارد T568A باشند<br>• ترتیب پین‌ها: <br>1️⃣ سفید-سبز | 2️⃣ سبز | 3️⃣ سفید-نارنجی | 4️⃣ آبی<br>5️⃣ سفید-آبی | 6️⃣ نارنجی | 7️⃣ سفید-قهوه‌ای | 8️⃣ قهوه‌ای",
+                            straightThroughT568B: "💡 برای اتصال {device1} به {device2} (Straight-Through T568B):<br>• هر دو کانکتور باید استاندارد T568B باشند<br>• ترتیب پین‌ها: <br>1️⃣ سفید-نارنجی | 2️⃣ نارنجی | 3️⃣ سفید-سبز | 4️⃣ آبی<br>5️⃣ سفید-آبی | 6️⃣ سبز | 7️⃣ سفید-قهوه‌ای | 8️⃣ قهوه‌ای",
                             crossOver: "💡 برای اتصال {device1} به {device2} (Cross-Over):<br>• کانکتور اول: T568B | کانکتور دوم: CrossOver<br>• کانکتور ۱: سفید-نارنجی، نارنجی، سفید-سبز، آبی، سفید-آبی، سبز، سفید-قهوه‌ای، قهوه‌ای<br>• کانکتور ۲: سفید-سبز، سبز، سفید-نارنجی، آبی، سفید-آبی، نارنجی، سفید-قهوه‌ای، قهوه‌ای<br>• تفاوت: پین‌های 1↔3 و 2↔6 جابجا می‌شوند"
                         },
                         
@@ -275,6 +291,11 @@ class NetworkCableSimulator {
                 // Update connection info
                 document.getElementById('connectionTypeLabel').textContent = t.connectionTypeLabel;
                 document.getElementById('recommendedStandardLabel').textContent = t.recommendedStandardLabel;
+                
+                // Update standard selector
+                document.getElementById('standardSelectorLabel').textContent = t.standardSelectorLabel;
+                document.getElementById('standardT568ALabel').textContent = t.standardT568ALabel;
+                document.getElementById('standardT568BLabel').textContent = t.standardT568BLabel;
                 
                 // Update sockets
                 document.getElementById('socket1Label').textContent = t.socket1Label;
@@ -394,6 +415,11 @@ class NetworkCableSimulator {
                 // تغییر دستگاه‌ها
                 document.getElementById('device1').addEventListener('change', () => this.updateConnectionInfo());
                 document.getElementById('device2').addEventListener('change', () => this.updateConnectionInfo());
+                
+                // Standard selection
+                document.querySelectorAll('input[name="standard"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => this.changeStandard(e.target.value));
+                });
 
                 // Difficulty buttons
                 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -428,6 +454,21 @@ class NetworkCableSimulator {
                 document.getElementById('resetBtn').addEventListener('click', () => this.resetConnections());
                 document.getElementById('newCableBtn').addEventListener('click', () => this.newCable());
                 document.getElementById('shuffleWiresBtn').addEventListener('click', () => this.createRandomWirePalette());
+            }
+            
+            changeStandard(standard) {
+                this.selectedStandard = standard;
+                this.updateConnectionInfo();
+                
+                // نمایش پیام مناسب برای زبان فعلی
+                const message = this.currentLanguage === 'fa' ? 
+                    `استاندارد ${standard} انتخاب شد` : 
+                    `Standard ${standard} selected`;
+                    
+                this.showMessage(message, 'info');
+                
+                // بروزرسانی نمایش اتصالات صحیح
+                this.updateDisplay();
             }
 
             handleWireClick(e) {
@@ -787,6 +828,16 @@ class NetworkCableSimulator {
                     standard = 'T568B';
                 }
                 
+                // For straight-through, show the selector and use selected standard
+                const standardSelector = document.getElementById('standardSelector');
+                if (cableType === 'Straight-Through') {
+                    standardSelector.style.display = 'block';
+                    standard = this.selectedStandard;
+                } else {
+                    standardSelector.style.display = 'none';
+                    standard = 'T568B/CrossOver';
+                }
+                
                 document.getElementById('cableType').textContent = cableType;
                 document.getElementById('recommendedStandard').textContent = standard;
                 
@@ -799,15 +850,16 @@ class NetworkCableSimulator {
                 let correctConnections = 0;
                 let totalConnections = 0;
                 
-                const standard1 = this.standards.T568B;
-                let standard2;
+                let standard1, standard2;
                 
                 if (this.currentCableType === 'Cross-Over') {
                     // برای کابل Cross-Over
+                    standard1 = this.standards.T568B;
                     standard2 = this.standards.CrossOver;
                 } else {
-                    // برای کابل Straight-Through
-                    standard2 = this.standards.T568B;
+                    // برای کابل Straight-Through - استفاده از استاندارد انتخاب شده
+                    standard1 = this.standards[this.selectedStandard];
+                    standard2 = this.standards[this.selectedStandard];
                 }
                 
                 // بررسی کانکتور اول
@@ -888,7 +940,9 @@ class NetworkCableSimulator {
                 let hintMessage = '';
                 
                 if (this.currentCableType === 'Straight-Through') {
-                    hintMessage = t.hints.straightThrough
+                    // انتخاب راهنمایی بر اساس استاندارد انتخاب شده
+                    const hintKey = this.selectedStandard === 'T568A' ? 'straightThroughT568A' : 'straightThroughT568B';
+                    hintMessage = t.hints[hintKey]
                         .replace('{device1}', this.getDeviceName(device1))
                         .replace('{device2}', this.getDeviceName(device2));
                 } else {
@@ -959,8 +1013,17 @@ class NetworkCableSimulator {
                 let correct = 0;
                 let total = 0;
                 
-                const standard1 = this.standards.T568B;
-                let standard2 = this.currentCableType === 'Cross-Over' ? this.standards.CrossOver : this.standards.T568B;
+                // استفاده از استاندارد انتخاب شده برای Straight-Through
+                let standard1, standard2;
+                
+                if (this.currentCableType === 'Cross-Over') {
+                    standard1 = this.standards.T568B;
+                    standard2 = this.standards.CrossOver;
+                } else {
+                    // برای Straight-Through از استاندارد انتخاب شده استفاده کن
+                    standard1 = this.standards[this.selectedStandard];
+                    standard2 = this.standards[this.selectedStandard];
+                }
                 
                 for (let i = 1; i <= 8; i++) {
                     total++;

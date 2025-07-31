@@ -94,6 +94,31 @@ body.rtl .controls {
     border: 2px dashed #2196F3;
 }
 
+.standard-selector {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.standard-selector label {
+    margin-right: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+    transition: color 0.3s ease;
+}
+
+.standard-selector label:hover {
+    color: #2196F3;
+}
+
+.standard-selector input[type="radio"] {
+    margin-right: 5px;
+    transform: scale(1.2);
+}
+
 .cable-workspace {
     display: flex;
     justify-content: space-between;

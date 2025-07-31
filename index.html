@@ -72,6 +72,21 @@
             <div class="connection-info" id="connectionInfo">
                 <strong id="connectionTypeLabel">Connection Type:</strong> <span id="cableType">Straight-Through</span><br>
                 <strong id="recommendedStandardLabel">Recommended Standard:</strong> <span id="recommendedStandard">T568B</span>
+                
+                <!-- Standard Selection for Straight-Through Cables -->
+                <div class="standard-selector" id="standardSelector" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                    <strong id="standardSelectorLabel">Choose Standard for Straight-Through:</strong>
+                    <div style="margin-top: 8px;">
+                        <label style="margin-right: 15px; cursor: pointer;">
+                            <input type="radio" name="standard" value="T568A" id="standardT568A" style="margin-right: 5px;">
+                            <span id="standardT568ALabel">T568A</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="standard" value="T568B" id="standardT568B" checked style="margin-right: 5px;">
+                            <span id="standardT568BLabel">T568B</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div class="cable-workspace">
