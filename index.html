@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Cable Wiring Game</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <div class="container">
+        <div class="header">
+            <h1 id="headerTitle">🔌 Network Cable Wiring Simulator</h1>
+            <p id="headerSubtitle">Practical Training for Network Device Connections</p>
+            <div class="language-toggle" id="languageToggle">🌐 فارسی</div>
+            <div class="sound-toggle" id="soundToggle">🔊 Sound</div>
+        </div>
+        
+        <div class="game-area">
+            <!-- Difficulty Selector -->
+            <div class="difficulty-selector">
+                <h3 id="difficultyTitle">Select Game Level</h3>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn easy active" data-level="easy" id="easyBtn">Easy (No Timer)</button>
+                    <button class="difficulty-btn medium" data-level="medium" id="mediumBtn">Medium (5 Minutes)</button>
+                    <button class="difficulty-btn hard" data-level="hard" id="hardBtn">Hard (3 Minutes)</button>
+                </div>
+            </div>
+
+            <!-- Timer Panel -->
+            <div class="timer-panel" id="timerPanel" style="display: none;">
+                <div class="timer-value" id="timerValue">00:00</div>
+                <div class="timer-label" id="timerLabel">Time Remaining</div>
+            </div>
+
+            <!-- High Score -->
+            <div class="high-score" id="highScore">
+                🏆 <span id="highScoreText">Best Score:</span> <span id="highScoreValue">0</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%;">
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+            <div class="device-selection">
+                <div class="device-selector">
+                    <h3 id="device1Title">First Device</h3>
+                    <select class="device-dropdown" id="device1">
+                        <option value="router" id="router1">Router</option>
+                        <option value="switch" id="switch1">Switch</option>
+                        <option value="pc" id="pc1">Computer (PC)</option>
+                        <option value="server" id="server1">Server</option>
+                    </select>
+                </div>
+                
+                <div style="font-size: 24px; color: #666;">⟷</div>
+                
+                <div class="device-selector">
+                    <h3 id="device2Title">Second Device</h3>
+                    <select class="device-dropdown" id="device2">
+                        <option value="switch" id="switch2">Switch</option>
+                        <option value="router" id="router2">Router</option>
+                        <option value="pc" id="pc2">Computer (PC)</option>
+                        <option value="server" id="server2">Server</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="connection-info" id="connectionInfo">
+                <strong id="connectionTypeLabel">Connection Type:</strong> <span id="cableType">Straight-Through</span><br>
+                <strong id="recommendedStandardLabel">Recommended Standard:</strong> <span id="recommendedStandard">T568B</span>
+            </div>
+
+            <div class="cable-workspace">
+                <div class="rj45-socket">
+                    <div class="socket-label" id="socket1Label">First Connector</div>
+                    <div class="socket-body">
+                        <div class="socket-opening">
+                            <div class="pin-container" id="socket1">
+                                <div class="pin pin-drop-zone" data-pin="1">
+                                    <div class="pin-number">1</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="2">
+                                    <div class="pin-number">2</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="3">
+                                    <div class="pin-number">3</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="4">
+                                    <div class="pin-number">4</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="5">
+                                    <div class="pin-number">5</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="6">
+                                    <div class="pin-number">6</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="7">
+                                    <div class="pin-number">7</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="8">
+                                    <div class="pin-number">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cable-connection">
+                    <div style="font-size: 12px; color: #666;" id="cableLabel">Network Cable</div>
+                    <div class="cable-line"></div>
+                    <div style="font-size: 12px; color: #666;" id="cableType2">Cat5e/Cat6</div>
+                </div>
+
+                <div class="rj45-socket">
+                    <div class="socket-label" id="socket2Label">Second Connector</div>
+                    <div class="socket-body">
+                        <div class="socket-opening">
+                            <div class="pin-container" id="socket2">
+                                <div class="pin pin-drop-zone" data-pin="1">
+                                    <div class="pin-number">1</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="2">
+                                    <div class="pin-number">2</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="3">
+                                    <div class="pin-number">3</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="4">
+                                    <div class="pin-number">4</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="5">
+                                    <div class="pin-number">5</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="6">
+                                    <div class="pin-number">6</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="7">
+                                    <div class="pin-number">7</div>
+                                </div>
+                                <div class="pin pin-drop-zone" data-pin="8">
+                                    <div class="pin-number">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wire-palette">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0;" id="wirePaletteTitle">Wire Palette - Drag wires to pins</h3>
+                    <button class="btn btn-primary" id="shuffleWiresBtn" style="padding: 8px 16px; font-size: 12px;">🔀 <span id="shuffleText">Shuffle</span></button>
+                </div>
+                <div class="wires-container" id="wiresContainer">
+                    <!-- سیم‌ها به صورت تصادفی قرار خواهند گرفت -->
+                </div>
+            </div>
+
+            <div class="score-panel">
+                <div class="score-item">
+                    <div class="score-value" id="score">0</div>
+                    <div class="score-label" id="scoreLabel">Score</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-value" id="attempts">0</div>
+                    <div class="score-label" id="attemptsLabel">Attempts</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-value" id="correctConnections">0/16</div>
+                    <div class="score-label" id="connectionsLabel">Correct Connections</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-success" id="checkBtn">Check Cable</button>
+                <button class="btn btn-primary" id="hintBtn">Hint</button>
+                <button class="btn btn-warning" id="resetBtn">Clear</button>
+                <button class="btn btn-danger" id="newCableBtn">New Cable</button>
+            </div>
+
+            <div id="message"></div>
+        </div>
+    </div>
+</body>
+</html>
