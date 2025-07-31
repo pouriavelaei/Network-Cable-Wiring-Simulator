@@ -215,8 +215,8 @@ terms of section 4, provided that you also meet all of these conditions:
     it, and giving a relevant date.
 
     b) The work must carry prominent notices stating that it is
-    released under this License and any conditions added under section
-    7.  This requirement modifies the requirement in section 4 to
+    released under this License and any conditions added under section 7.  This
+    requirement modifies the requirement in section 4 to
     "keep intact all notices".
 
     c) You must license the entire work, as a whole, under this
@@ -630,7 +630,7 @@ free software which everyone can redistribute and change under these terms.
 to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 
-RJ45-Master - A project for [brief description of your project]
+Network Cable Wiring Simulator - A practical training tool for network device connections
 Copyright (C) 2025 Pouria Velaei
 
 This program is free software: you can redistribute it and/or modify
