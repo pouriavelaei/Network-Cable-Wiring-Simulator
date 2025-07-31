@@ -1,0 +1,602 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', 'Tahoma', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+/* RTL Support for Persian */
+body.rtl {
+    direction: rtl;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+}
+
+body.rtl .device-selection {
+    flex-direction: row-reverse;
+}
+
+body.rtl .controls {
+    flex-direction: row-reverse;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.game-area {
+    padding: 30px;
+}
+
+.device-selection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.device-selector {
+    text-align: center;
+}
+
+.device-selector h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.device-dropdown {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.device-dropdown:focus {
+    outline: none;
+    border-color: #2196F3;
+}
+
+.connection-info {
+    text-align: center;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px dashed #2196F3;
+}
+
+.cable-workspace {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.rj45-socket {
+    background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 
+        inset 0 4px 8px rgba(0,0,0,0.3),
+        0 8px 16px rgba(0,0,0,0.2);
+    position: relative;
+    min-width: 300px;
+}
+
+.socket-label {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.socket-body {
+    background: linear-gradient(145deg, #333, #1f1f1f);
+    border-radius: 15px;
+    padding: 25px;
+    border: 3px solid #444;
+    position: relative;
+}
+
+.socket-opening {
+    background: #000;
+    height: 120px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #555;
+}
+
+.pin-container {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+    padding: 8px;
+    gap: 3px;
+}
+
+.pin {
+    flex: 1;
+    height: 90px;
+    background: linear-gradient(to top, #666, #888);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    border: 2px solid #555;
+    transition: all 0.3s;
+    cursor: pointer;
+    min-width: 25px;
+}
+
+.pin.has-wire {
+    background: var(--wire-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.pin-number {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #888;
+    font-weight: bold;
+}
+
+.cable-connection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+}
+
+.cable-line {
+    width: 250px;
+    height: 10px;
+    background: linear-gradient(90deg, #666, #888, #666);
+    border-radius: 5px;
+    position: relative;
+    margin: 15px 0;
+}
+
+.cable-line::before,
+.cable-line::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 12px;
+    background: #555;
+    border-radius: 6px;
+    top: -2px;
+}
+
+.cable-line::before {
+    left: -10px;
+}
+
+.cable-line::after {
+    right: -10px;
+}
+
+.wire-palette {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 30px 0;
+    border: 2px solid #e9ecef;
+}
+
+.wire-palette h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.wires-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.wire-spool {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    transition: all 0.3s;
+    box-shadow: 
+        0 4px 8px rgba(0,0,0,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.2);
+    border: 3px solid rgba(255,255,255,0.3);
+    position: relative;
+    user-select: none;
+}
+
+.wire-spool:hover {
+    transform: scale(1.1);
+    box-shadow: 
+        0 6px 12px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+.wire-spool:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.wire-spool.dragging {
+    opacity: 0.7;
+    transform: scale(1.1);
+    z-index: 1000;
+    position: fixed;
+    pointer-events: none;
+}
+
+/* رنگ‌های سیم‌ها */
+.wire-white-orange { 
+    background: linear-gradient(135deg, #fff 0%, #fff 50%, #ff8c00 50%, #ff8c00 100%);
+    color: #333;
+}
+.wire-orange { background: linear-gradient(135deg, #ff8c00, #ff6600); }
+.wire-white-green { 
+    background: linear-gradient(135deg, #fff 0%, #fff 50%, #32cd32 50%, #32cd32 100%);
+    color: #333;
+}
+.wire-blue { background: linear-gradient(135deg, #0066ff, #0044cc); }
+.wire-white-blue { 
+    background: linear-gradient(135deg, #fff 0%, #fff 50%, #0066ff 50%, #0066ff 100%);
+    color: #333;
+}
+.wire-green { background: linear-gradient(135deg, #32cd32, #228b22); }
+.wire-white-brown { 
+    background: linear-gradient(135deg, #fff 0%, #fff 50%, #8b4513 50%, #8b4513 100%);
+    color: #333;
+}
+.wire-brown { background: linear-gradient(135deg, #8b4513, #654321); }
+
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+}
+
+.score-panel {
+    display: flex;
+    justify-content: space-around;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+/* Timer Styles */
+.timer-panel {
+    text-align: center;
+    background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+    color: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.timer-value {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.timer-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Difficulty Selector */
+.difficulty-selector {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f0f8ff;
+    border-radius: 15px;
+    border: 2px dashed #2196F3;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.difficulty-btn.easy {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.difficulty-btn.medium {
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+    color: white;
+}
+
+.difficulty-btn.hard {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+}
+
+.difficulty-btn.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.6);
+}
+
+/* Language Toggle */
+.language-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 8px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 12px;
+}
+
+.language-toggle:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Sound Effects Toggle */
+.sound-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 8px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sound-toggle:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Animation for correct wire placement */
+@keyframes wireSuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); box-shadow: 0 0 20px #4CAF50; }
+    100% { transform: scale(1); }
+}
+
+.pin.wire-success {
+    animation: wireSuccess 0.6s ease-in-out;
+}
+
+/* High Score Display */
+.high-score {
+    text-align: center;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #333;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    height: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.score-item {
+    text-align: center;
+}
+
+.score-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.score-label {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.message {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.message.success {
+    background: linear-gradient(45deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.message.error {
+    background: linear-gradient(45deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+.message.info {
+    background: linear-gradient(45deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+    border: 2px solid #bee5eb;
+}
+
+.pin-drop-zone {
+    position: relative;
+}
+
+.wire-spool.selected {
+    border: 4px solid #FFD700;
+    box-shadow: 
+        0 6px 12px rgba(0,0,0,0.3),
+        0 0 20px rgba(255, 215, 0, 0.6);
+    transform: scale(1.1);
+}
+
+.pin-drop-zone.drag-over {
+    background: linear-gradient(to top, #4CAF50, #66bb6a) !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+    border-color: #4CAF50 !important;
+    transform: scale(1.05);
+}
+
+.pin.has-wire {
+    background: var(--wire-color);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    border-color: #333;
+}
+
+@media (max-width: 768px) {
+    .cable-workspace {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .device-selection {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .wire-spool {
+        width: 70px;
+        height: 70px;
+        font-size: 11px;
+    }
+    
+    .cable-line {
+        width: 180px;
+    }
+    
+    .rj45-socket {
+        min-width: 250px;
+        padding: 25px;
+    }
+    
+    .socket-opening {
+        height: 100px;
+    }
+    
+    .pin {
+        height: 75px;
+        min-width: 20px;
+    }
+}
