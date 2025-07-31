@@ -2,6 +2,10 @@ class NetworkCableSimulator {
             constructor() {
                 this.score = 0;
                 this.attempts = 0;
+                this.successfulAttempts = 0;
+                this.consecutiveSuccesses = 0;
+                this.perfectCables = 0;
+                this.totalPlayTime = 0;
                 this.connections = {
                     socket1: {},
                     socket2: {}
@@ -10,6 +14,26 @@ class NetworkCableSimulator {
                 // Language support
                 this.currentLanguage = 'en';
                 this.translations = this.initTranslations();
+                
+                // Enhanced scoring system
+                this.basePoints = {
+                    perfect: 100,
+                    good: 60,
+                    average: 30,
+                    poor: 10
+                };
+                
+                this.multipliers = {
+                    easy: 1,
+                    medium: 1.5,
+                    hard: 2.5
+                };
+                
+                this.bonusFactors = {
+                    speed: 0.3,        // Speed bonus factor
+                    streak: 0.2,       // Consecutive success bonus
+                    accuracy: 0.25     // First-try accuracy bonus
+                };
                 
                 // New properties for enhanced features
                 this.difficulty = 'easy';
@@ -61,8 +85,8 @@ class NetworkCableSimulator {
                         // Difficulty
                         difficultyTitle: "Select Game Level",
                         easyBtn: "Easy (No Timer)",
-                        mediumBtn: "Medium (5 Minutes)",
-                        hardBtn: "Hard (3 Minutes)",
+                        mediumBtn: "Medium (2 Minutes)",
+                        hardBtn: "Hard (1 Minute)",
                         
                         // Timer
                         timerLabel: "Time Remaining",
@@ -100,6 +124,7 @@ class NetworkCableSimulator {
                         scoreLabel: "Score",
                         attemptsLabel: "Attempts",
                         connectionsLabel: "Correct Connections",
+                        streakLabel: "Streak",
                         
                         // Buttons
                         checkBtn: "Check Cable",
@@ -129,11 +154,14 @@ class NetworkCableSimulator {
                             connectionsClear: "Connections cleared. Start again.",
                             newCable: "New cable! Check devices and start wiring.",
                             timeUp: "⏰ Time's up! Try again.",
-                            perfectCable: "🎉 Excellent! Cable is perfectly correct. Type: {type}<br>Points earned: {points}",
+                            perfectCable: "🎉 Excellent! Cable is perfectly correct. Type: {type}<br>Points earned: {points}<br>{bonusInfo}",
                             newRecord: "🏆 New record! Congratulations!",
                             goodCable: "👍 Good! {percentage}% correct. Few errors.<br>Points earned: {points}",
                             needsImprovement: "⚠️ Needs improvement! {percentage}% correct.<br>Points earned: {points}",
-                            incorrectCable: "❌ Incorrect cable! {percentage}% correct. Try again."
+                            incorrectCable: "❌ Incorrect cable! {percentage}% correct. Try again.<br>Points earned: {points}",
+                            streakBonus: "🔥 Streak Bonus: +{bonus} points!",
+                            timeBonus: "⏱️ Time Bonus: +{bonus} points!",
+                            firstTryBonus: "🎯 First Try Bonus: +{bonus} points!"
                         },
                         
                         // Hints
@@ -163,8 +191,8 @@ class NetworkCableSimulator {
                         // Difficulty
                         difficultyTitle: "سطح بازی را انتخاب کنید",
                         easyBtn: "آسان (بدون زمان)",
-                        mediumBtn: "متوسط (5 دقیقه)",
-                        hardBtn: "سخت (3 دقیقه)",
+                        mediumBtn: "متوسط (2 دقیقه)",
+                        hardBtn: "سخت (1 دقیقه)",
                         
                         // Timer
                         timerLabel: "زمان باقیمانده",
@@ -202,6 +230,7 @@ class NetworkCableSimulator {
                         scoreLabel: "امتیاز",
                         attemptsLabel: "تلاش",
                         connectionsLabel: "اتصالات صحیح",
+                        streakLabel: "پیاپی",
                         
                         // Buttons
                         checkBtn: "بررسی کابل",
@@ -231,11 +260,14 @@ class NetworkCableSimulator {
                             connectionsClear: "اتصالات پاک شد. دوباره شروع کنید.",
                             newCable: "کابل جدید! دستگاه‌ها را ببینید و کابل‌کشی کنید.",
                             timeUp: "⏰ زمان تمام شد! دوباره تلاش کنید.",
-                            perfectCable: "🎉 عالی! کابل کاملاً صحیح است. نوع: {type}<br>امتیاز کسب شده: {points}",
+                            perfectCable: "🎉 عالی! کابل کاملاً صحیح است. نوع: {type}<br>امتیاز کسب شده: {points}<br>{bonusInfo}",
                             newRecord: "🏆 رکورد جدید! تبریک می‌گویم!",
                             goodCable: "👍 خوب! {percentage}% صحیح است. چند خطا دارید.<br>امتیاز کسب شده: {points}",
                             needsImprovement: "⚠️ نیاز به بهبود! {percentage}% صحیح است.<br>امتیاز کسب شده: {points}",
-                            incorrectCable: "❌ کابل نادرست! {percentage}% صحیح است. دوباره تلاش کنید."
+                            incorrectCable: "❌ کابل نادرست! {percentage}% صحیح است. دوباره تلاش کنید.<br>امتیاز کسب شده: {points}",
+                            streakBonus: "🔥 جایزه پیاپی: +{bonus} امتیاز!",
+                            timeBonus: "⏱️ جایزه زمان: +{bonus} امتیاز!",
+                            firstTryBonus: "🎯 جایزه تلاش اول: +{bonus} امتیاز!"
                         },
                         
                         // Hints
@@ -265,6 +297,21 @@ class NetworkCableSimulator {
                 this.createInitialWirePalette();
                 this.updateLanguage();
                 this.applyTheme();
+                this.updateStandardSelection();
+            }
+
+            updateStandardSelection() {
+                // Set initial visual state for standard selector
+                setTimeout(() => {
+                    document.querySelectorAll('.standard-label').forEach(label => {
+                        const radio = label.querySelector('input[type="radio"]');
+                        if (radio && radio.checked) {
+                            label.classList.add('selected');
+                        } else {
+                            label.classList.remove('selected');
+                        }
+                    });
+                }, 100);
             }
 
             updateLanguage() {
@@ -317,6 +364,7 @@ class NetworkCableSimulator {
                 document.getElementById('scoreLabel').textContent = t.scoreLabel;
                 document.getElementById('attemptsLabel').textContent = t.attemptsLabel;
                 document.getElementById('connectionsLabel').textContent = t.connectionsLabel;
+                document.getElementById('streakLabel').textContent = t.streakLabel;
                 
                 // Update buttons
                 document.getElementById('checkBtn').textContent = t.checkBtn;
@@ -334,6 +382,19 @@ class NetworkCableSimulator {
                 this.updateConnectionInfo();
                 this.updateWireLabels();
                 this.updateThemeToggleText();
+                this.updateLevelIndicator();
+            }
+
+            updateLevelIndicator() {
+                const levelIndicator = document.getElementById('currentLevelText');
+                if (levelIndicator) {
+                    const levelNames = {
+                        'easy': this.currentLanguage === 'fa' ? 'حالت آسان' : 'Easy Mode',
+                        'medium': this.currentLanguage === 'fa' ? 'حالت متوسط' : 'Medium Mode', 
+                        'hard': this.currentLanguage === 'fa' ? 'حالت سخت' : 'Hard Mode'
+                    };
+                    levelIndicator.textContent = levelNames[this.difficulty];
+                }
             }
 
             updateWireLabels() {
@@ -472,6 +533,16 @@ class NetworkCableSimulator {
                 this.selectedStandard = standard;
                 this.updateConnectionInfo();
                 
+                // Update visual state of radio buttons
+                document.querySelectorAll('.standard-label').forEach(label => {
+                    const radio = label.querySelector('input[type="radio"]');
+                    if (radio.checked) {
+                        label.classList.add('selected');
+                    } else {
+                        label.classList.remove('selected');
+                    }
+                });
+                
                 // نمایش پیام مناسب برای زبان فعلی
                 const message = this.currentLanguage === 'fa' ? 
                     `استاندارد ${standard} انتخاب شد` : 
@@ -590,6 +661,17 @@ class NetworkCableSimulator {
                 });
                 document.querySelector(`[data-level="${level}"]`).classList.add('active');
                 
+                // Update level indicator
+                const levelIndicator = document.getElementById('currentLevelText');
+                const levelNames = {
+                    'easy': this.currentLanguage === 'fa' ? 'حالت آسان' : 'Easy Mode',
+                    'medium': this.currentLanguage === 'fa' ? 'حالت متوسط' : 'Medium Mode', 
+                    'hard': this.currentLanguage === 'fa' ? 'حالت سخت' : 'Hard Mode'
+                };
+                if (levelIndicator) {
+                    levelIndicator.textContent = levelNames[level];
+                }
+                
                 // Set time limits
                 switch(level) {
                     case 'easy':
@@ -597,11 +679,11 @@ class NetworkCableSimulator {
                         document.getElementById('timerPanel').style.display = 'none';
                         break;
                     case 'medium':
-                        this.timeLimit = 300; // 5 minutes
+                        this.timeLimit = 120; // 2 minutes - کاهش از 5 دقیقه
                         document.getElementById('timerPanel').style.display = 'block';
                         break;
                     case 'hard':
-                        this.timeLimit = 180; // 3 minutes
+                        this.timeLimit = 60; // 1 minute - کاهش از 3 دقیقه
                         document.getElementById('timerPanel').style.display = 'block';
                         break;
                 }
@@ -660,21 +742,37 @@ class NetworkCableSimulator {
                 
                 document.getElementById('timerValue').textContent = display;
                 
-                // Change color when time is running out
+                // Change color when time is running out - تنظیم برای زمان‌های کم‌تر
                 const timerPanel = document.getElementById('timerPanel');
-                if (this.timeRemaining <= 30) {
+                const warningTime = this.difficulty === 'hard' ? 15 : 30; // هشدار زودتر در سطح سخت
+                const criticalTime = this.difficulty === 'hard' ? 10 : 15;
+                
+                if (this.timeRemaining <= criticalTime) {
                     timerPanel.style.background = 'linear-gradient(45deg, #f44336, #d32f2f)';
-                } else if (this.timeRemaining <= 60) {
+                    timerPanel.style.animation = 'pulse 0.5s infinite'; // چشمک زدن
+                } else if (this.timeRemaining <= warningTime) {
                     timerPanel.style.background = 'linear-gradient(45deg, #FF9800, #F57C00)';
+                    timerPanel.style.animation = 'none';
                 } else {
                     timerPanel.style.background = 'linear-gradient(45deg, #FF6B6B, #FF8E53)';
+                    timerPanel.style.animation = 'none';
                 }
             }
 
             timeUp() {
                 this.resetTimer();
                 this.playSound('timeup');
+                
+                // پنالتی برای تمام شدن زمان در سطوح سخت‌تر
+                if (this.difficulty === 'medium') {
+                    this.score = Math.max(0, this.score - 20);
+                } else if (this.difficulty === 'hard') {
+                    this.score = Math.max(0, this.score - 50);
+                    this.consecutiveSuccesses = 0; // از دست دادن streak
+                }
+                
                 this.showMessage(this.translations[this.currentLanguage].messages.timeUp, 'error');
+                this.updateDisplay();
                 this.newCable();
             }
 
@@ -763,9 +861,10 @@ class NetworkCableSimulator {
                     { name: 'Brown', class: 'wire-brown', text: 'Brown', translatedName: t.wireColors['Brown'] }
                 ];
 
-                // ترتیب تصادفی سیم‌ها - چند بار مخلوط کردن برای تصادفی‌تر شدن
+                // ترتیب تصادفی سیم‌ها - برای سطح سخت بیشتر مخلوط می‌کنیم
                 let shuffledWires = [...wires];
-                for (let i = 0; i < 3; i++) {
+                const shuffleCount = this.difficulty === 'hard' ? 8 : this.difficulty === 'medium' ? 5 : 3;
+                for (let i = 0; i < shuffleCount; i++) {
                     shuffledWires = shuffledWires.sort(() => Math.random() - 0.5);
                 }
                 
@@ -861,6 +960,7 @@ class NetworkCableSimulator {
                 this.attempts++;
                 let correctConnections = 0;
                 let totalConnections = 0;
+                const startTime = Date.now();
                 
                 let standard1, standard2;
                 
@@ -891,24 +991,15 @@ class NetworkCableSimulator {
                 }
                 
                 const percentage = Math.round((correctConnections / totalConnections) * 100);
+                const scoreResult = this.calculateAdvancedScore(percentage, startTime);
+                const earnedPoints = scoreResult.points;
                 
-                // Calculate bonus points based on difficulty and time
-                let bonusMultiplier = 1;
-                if (this.difficulty === 'medium') bonusMultiplier = 1.5;
-                if (this.difficulty === 'hard') bonusMultiplier = 2;
-                
-                let timeBonus = 0;
-                if (this.timeLimit > 0 && this.timeRemaining > 0) {
-                    timeBonus = Math.round((this.timeRemaining / this.timeLimit) * 50);
-                }
-                
+                // Update statistics
                 if (percentage === 100) {
-                    const earnedPoints = Math.round((100 + timeBonus) * bonusMultiplier);
-                    this.score += earnedPoints;
+                    this.successfulAttempts++;
+                    this.consecutiveSuccesses++;
+                    this.perfectCables++;
                     this.playSound('success');
-                    this.showMessage(this.translations[this.currentLanguage].messages.perfectCable
-                        .replace('{type}', this.currentCableType)
-                        .replace('{points}', earnedPoints), 'success');
                     
                     // Stop timer on success
                     if (this.timer) {
@@ -916,32 +1007,121 @@ class NetworkCableSimulator {
                         this.timer = null;
                     }
                     
+                    let message = this.translations[this.currentLanguage].messages.perfectCable
+                        .replace('{type}', this.currentCableType)
+                        .replace('{points}', earnedPoints);
+                    
+                    if (scoreResult.bonusInfo) {
+                        message = message.replace('{bonusInfo}', scoreResult.bonusInfo);
+                    } else {
+                        message = message.replace('{bonusInfo}', '');
+                    }
+                    
+                    this.showMessage(message, 'success');
+                    
                     // Check for high score
-                    if (this.score > this.highScore) {
-                        this.highScore = this.score;
+                    if (this.score + earnedPoints > this.highScore) {
+                        this.highScore = this.score + earnedPoints;
                         localStorage.setItem('networkCableHighScore', this.highScore);
                         this.updateHighScore();
-                        this.showMessage(this.translations[this.currentLanguage].messages.newRecord, 'success');
+                        setTimeout(() => {
+                            this.showMessage(this.translations[this.currentLanguage].messages.newRecord, 'success');
+                        }, 2000);
                     }
+                    
                 } else if (percentage >= 80) {
-                    const earnedPoints = Math.round(50 * bonusMultiplier);
-                    this.score += earnedPoints;
+                    this.consecutiveSuccesses = 0; // Reset streak on imperfect score
                     this.showMessage(this.translations[this.currentLanguage].messages.goodCable
                         .replace('{percentage}', percentage)
                         .replace('{points}', earnedPoints), 'info');
+                        
                 } else if (percentage >= 50) {
-                    const earnedPoints = Math.round(20 * bonusMultiplier);
-                    this.score += earnedPoints;
+                    this.consecutiveSuccesses = 0; // Reset streak
                     this.showMessage(this.translations[this.currentLanguage].messages.needsImprovement
                         .replace('{percentage}', percentage)
                         .replace('{points}', earnedPoints), 'error');
+                        
                 } else {
+                    this.consecutiveSuccesses = 0; // Reset streak
                     this.playSound('error');
+                    
+                    // پنالتی زمانی برای سطح سخت
+                    if (this.difficulty === 'hard' && this.timer && this.timeRemaining > 0) {
+                        this.timeRemaining = Math.max(0, this.timeRemaining - 10); // کم کردن 10 ثانیه
+                    }
+                    
                     this.showMessage(this.translations[this.currentLanguage].messages.incorrectCable
-                        .replace('{percentage}', percentage), 'error');
+                        .replace('{percentage}', percentage)
+                        .replace('{points}', earnedPoints), 'error');
                 }
                 
+                this.score += earnedPoints;
                 this.updateDisplay();
+            }
+
+            calculateAdvancedScore(percentage, startTime) {
+                let baseScore = 0;
+                let bonusInfo = [];
+                
+                // Base points based on accuracy
+                if (percentage === 100) {
+                    baseScore = this.basePoints.perfect;
+                } else if (percentage >= 80) {
+                    baseScore = this.basePoints.good;
+                } else if (percentage >= 50) {
+                    baseScore = this.basePoints.average;
+                } else if (percentage >= 25) {
+                    baseScore = this.basePoints.poor;
+                } else {
+                    return { points: 0, bonusInfo: "" };
+                }
+                
+                // Difficulty multiplier
+                const difficultyMultiplier = this.multipliers[this.difficulty];
+                let totalScore = Math.round(baseScore * difficultyMultiplier);
+                
+                // Time bonus (if time limit exists)
+                if (this.timeLimit > 0 && this.timeRemaining > 0) {
+                    const timeEfficiency = this.timeRemaining / this.timeLimit;
+                    const timeBonus = Math.round(totalScore * this.bonusFactors.speed * timeEfficiency);
+                    if (timeBonus > 0) {
+                        totalScore += timeBonus;
+                        bonusInfo.push(this.translations[this.currentLanguage].messages.timeBonus.replace('{bonus}', timeBonus));
+                    }
+                }
+                
+                // Streak bonus (for consecutive perfect scores)
+                if (percentage === 100 && this.consecutiveSuccesses > 0) {
+                    const streakBonus = Math.round(totalScore * this.bonusFactors.streak * Math.min(this.consecutiveSuccesses, 5));
+                    if (streakBonus > 0) {
+                        totalScore += streakBonus;
+                        bonusInfo.push(this.translations[this.currentLanguage].messages.streakBonus.replace('{bonus}', streakBonus));
+                    }
+                }
+                
+                // First attempt bonus
+                if (this.attempts === 0 && percentage === 100) { // attempts will be incremented after this calculation
+                    const firstTryBonus = Math.round(totalScore * this.bonusFactors.accuracy);
+                    if (firstTryBonus > 0) {
+                        totalScore += firstTryBonus;
+                        bonusInfo.push(this.translations[this.currentLanguage].messages.firstTryBonus.replace('{bonus}', firstTryBonus));
+                    }
+                }
+                
+                // Penalty for multiple attempts on same cable - سخت‌تر برای سطوح بالاتر
+                if (this.attempts > 0 && percentage < 100) { // attempts already incremented
+                    let penaltyRate = 0.1; // پنالتی پایه
+                    if (this.difficulty === 'medium') penaltyRate = 0.15;
+                    if (this.difficulty === 'hard') penaltyRate = 0.25;
+                    
+                    const penalty = Math.round(totalScore * penaltyRate * this.attempts);
+                    totalScore = Math.max(0, totalScore - penalty);
+                }
+                
+                return {
+                    points: Math.max(0, totalScore),
+                    bonusInfo: bonusInfo.join('<br>')
+                };
             }
 
             showHint() {
@@ -986,10 +1166,8 @@ class NetworkCableSimulator {
             newCable() {
                 this.resetConnections();
                 
-                // Don't reset score unless it's a new game
-                if (this.attempts === 0) {
-                    this.score = 0;
-                }
+                // Reset attempts for new cable, but keep score and other stats
+                this.attempts = 0;
                 
                 // تصادفی کردن انتخاب دستگاه‌ها
                 const devices = ['router', 'switch', 'pc', 'server'];
@@ -1020,6 +1198,17 @@ class NetworkCableSimulator {
             updateDisplay() {
                 document.getElementById('score').textContent = this.score;
                 document.getElementById('attempts').textContent = this.attempts;
+                
+                // Show streak information
+                const streakContainer = document.getElementById('streakContainer');
+                const streakElement = document.getElementById('streak');
+                
+                if (this.consecutiveSuccesses > 1) {
+                    streakElement.textContent = `🔥 ${this.consecutiveSuccesses}`;
+                    streakContainer.style.display = 'flex';
+                } else {
+                    streakContainer.style.display = 'none';
+                }
                 
                 // شمارش اتصالات صحیح
                 let correct = 0;

@@ -281,28 +281,80 @@ body.rtl .controls {
 
 .standard-selector {
     margin-top: 15px;
-    padding: 10px;
+    padding: 15px;
     background: var(--standard-selector-bg);
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--standard-selector-border);
     text-align: center;
 }
 
-.standard-selector label {
-    margin: 0 10px;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--standard-label-color);
-    transition: color 0.3s ease;
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+.standard-selector strong {
+    color: var(--text-color);
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: block;
 }
 
-.standard-selector label:hover {
+.standard-options {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.standard-label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 2px solid var(--standard-selector-border);
+    background: rgba(255, 255, 255, 0.05);
+    min-width: 80px;
+    justify-content: center;
+}
+
+.standard-label:hover {
     color: var(--connection-info-border);
-    background-color: var(--standard-label-hover-bg);
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--connection-info-border);
+    transform: translateY(-1px);
+}
+
+.standard-label input[type="radio"] {
+    margin-right: 8px;
+    margin-left: 0;
+    transform: scale(1.2);
+    accent-color: var(--connection-info-border);
+}
+
+.standard-label input[type="radio"]:checked {
+    accent-color: var(--connection-info-border);
+}
+
+.standard-label:has(input[type="radio"]:checked),
+.standard-label.selected {
+    color: white;
+    background: var(--connection-info-border);
+    border-color: var(--connection-info-border);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.standard-label span {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Fallback for browsers that don't support :has() */
+@supports not selector(:has(*)) {
+    .standard-label input[type="radio"]:checked {
+        accent-color: white;
+    }
 }
 
 .standard-selector input[type="radio"] {
@@ -312,13 +364,13 @@ body.rtl .controls {
 }
 
 /* RTL Support for Persian */
-body.rtl .standard-selector label {
-    margin: 0 10px;
+body.rtl .standard-label {
+    flex-direction: row-reverse;
 }
 
-body.rtl .standard-selector input[type="radio"] {
-    margin-left: 5px;
-    margin-right: 5px;
+body.rtl .standard-label input[type="radio"] {
+    margin-right: 0;
+    margin-left: 8px;
 }
 
 .cable-workspace {
@@ -438,6 +490,23 @@ body.rtl .standard-selector input[type="radio"] {
     box-shadow: 
         0 4px 8px rgba(0, 0, 0, 0.4),
         inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    animation: pin-glow 1s infinite alternate;
+}
+
+@keyframes pin-glow {
+    0% { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2); }
+    100% { box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3); }
+}
+
+.pin.drag-over {
+    border-color: #3b82f6;
+    background: linear-gradient(to top, #3b82f6, #60a5fa);
+    animation: pin-ready 0.5s infinite alternate;
+}
+
+@keyframes pin-ready {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
 }
 
 .pin.has-wire {
@@ -662,10 +731,17 @@ body.rtl .standard-selector input[type="radio"] {
     box-shadow: 
         0 8px 20px rgba(0,0,0,0.15),
         inset 0 1px 2px rgba(255,255,255,0.3);
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.3); }
+    100% { box-shadow: 0 12px 30px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4); }
 }
 
 .btn:active {
     transform: translateY(-1px);
+    animation: none;
 }
 
 .btn-primary {
@@ -715,6 +791,25 @@ body.rtl .standard-selector input[type="radio"] {
     border: 1px solid var(--score-panel-border);
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.score-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.score-item {
+    text-align: center;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.score-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: scale(1.05);
 }
 
 .score-panel::before {
@@ -814,6 +909,33 @@ body.rtl .standard-selector input[type="radio"] {
     flex-wrap: wrap;
 }
 
+.current-level-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.level-icon {
+    font-size: 16px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
 .difficulty-btn {
     padding: 12px 24px;
     border: none;
@@ -861,6 +983,25 @@ body.rtl .standard-selector input[type="radio"] {
     box-shadow: 
         0 8px 20px rgba(59, 130, 246, 0.4),
         inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.difficulty-btn.active::after {
+    content: '✓';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #10b981;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .difficulty-btn:hover {
@@ -1143,6 +1284,20 @@ body.rtl .standard-selector input[type="radio"] {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInMessage 0.5s ease forwards;
+}
+
+@keyframes slideInMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .message::before {
@@ -1752,4 +1907,51 @@ h1, h2, h3, h4, h5, h6 {
     background: #007bff;
     color: white;
     font-weight: bold;
+}
+
+/* Enhanced UI - Tooltips */
+[title] {
+    position: relative;
+}
+
+[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: tooltip-show 0.3s ease forwards;
+    margin-bottom: 5px;
+}
+
+[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    opacity: 0;
+    animation: tooltip-show 0.3s ease forwards;
+}
+
+@keyframes tooltip-show {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }

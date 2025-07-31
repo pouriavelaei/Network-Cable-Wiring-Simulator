@@ -78,15 +78,19 @@
             <!-- Difficulty Selector -->
             <section class="difficulty-selector" role="group" aria-labelledby="difficultyTitle">
                 <h3 id="difficultyTitle">Select Game Level</h3>
+                <div class="current-level-indicator" id="currentLevelIndicator">
+                    <span class="level-icon">🎯</span>
+                    <span id="currentLevelText">Easy Mode</span>
+                </div>
                 <div class="difficulty-buttons" role="radiogroup" aria-labelledby="difficultyTitle">
                     <button class="difficulty-btn easy active" data-level="easy" id="easyBtn" role="radio" aria-checked="true" aria-describedby="easy-desc">Easy (No Timer)</button>
-                    <button class="difficulty-btn medium" data-level="medium" id="mediumBtn" role="radio" aria-checked="false" aria-describedby="medium-desc">Medium (5 Minutes)</button>
-                    <button class="difficulty-btn hard" data-level="hard" id="hardBtn" role="radio" aria-checked="false" aria-describedby="hard-desc">Hard (3 Minutes)</button>
+                    <button class="difficulty-btn medium" data-level="medium" id="mediumBtn" role="radio" aria-checked="false" aria-describedby="medium-desc">Medium (2 Minutes)</button>
+                    <button class="difficulty-btn hard" data-level="hard" id="hardBtn" role="radio" aria-checked="false" aria-describedby="hard-desc">Hard (1 Minute)</button>
                 </div>
                 <!-- Hidden descriptions for screen readers -->
                 <div id="easy-desc" class="sr-only">Easy mode with no time limit for free practice</div>
-                <div id="medium-desc" class="sr-only">Medium difficulty with 5 minute timer</div>
-                <div id="hard-desc" class="sr-only">Hard difficulty with 3 minute timer for advanced users</div>
+                <div id="medium-desc" class="sr-only">Medium difficulty with 2 minute timer - more challenging</div>
+                <div id="hard-desc" class="sr-only">Hard difficulty with 1 minute timer - maximum challenge with penalties</div>
             </section>
 
             <!-- Timer Panel -->
@@ -137,15 +141,15 @@
                 <strong id="recommendedStandardLabel">Recommended Standard:</strong> <span id="recommendedStandard">T568B</span>
                 
                 <!-- Standard Selection for Straight-Through Cables -->
-                <div class="standard-selector" id="standardSelector" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                <div class="standard-selector" id="standardSelector">
                     <strong id="standardSelectorLabel">Choose Standard for Straight-Through:</strong>
-                    <div style="margin-top: 8px; text-align: center;">
-                        <label style="margin: 0 10px; cursor: pointer; display: inline-block; padding: 5px 10px;">
-                            <input type="radio" name="standard" value="T568A" id="standardT568A" style="margin: 0 5px;">
+                    <div class="standard-options">
+                        <label class="standard-label">
+                            <input type="radio" name="standard" value="T568A" id="standardT568A">
                             <span id="standardT568ALabel">T568A</span>
                         </label>
-                        <label style="margin: 0 10px; cursor: pointer; display: inline-block; padding: 5px 10px;">
-                            <input type="radio" name="standard" value="T568B" id="standardT568B" checked style="margin: 0 5px;">
+                        <label class="standard-label">
+                            <input type="radio" name="standard" value="T568B" id="standardT568B" checked>
                             <span id="standardT568BLabel">T568B</span>
                         </label>
                     </div>
@@ -251,13 +255,17 @@
                     <div class="score-value" id="correctConnections">0/16</div>
                     <div class="score-label" id="connectionsLabel">Correct Connections</div>
                 </div>
+                <div class="score-item" id="streakContainer">
+                    <div class="score-value" id="streak">🔥 0</div>
+                    <div class="score-label" id="streakLabel">Streak</div>
+                </div>
             </div>
 
             <section class="controls" role="group" aria-label="Game control buttons">
-                <button class="btn btn-success" id="checkBtn" aria-describedby="check-help">Check Cable</button>
-                <button class="btn btn-primary" id="hintBtn" aria-describedby="hint-help">Hint</button>
-                <button class="btn btn-warning" id="resetBtn" aria-describedby="reset-help">Clear</button>
-                <button class="btn btn-danger" id="newCableBtn" aria-describedby="new-help">New Cable</button>
+                <button class="btn btn-success" id="checkBtn" aria-describedby="check-help" title="Verify your cable wiring">Check Cable</button>
+                <button class="btn btn-primary" id="hintBtn" aria-describedby="hint-help" title="Get helpful hints">Hint</button>
+                <button class="btn btn-warning" id="resetBtn" aria-describedby="reset-help" title="Clear all connections">Clear</button>
+                <button class="btn btn-danger" id="newCableBtn" aria-describedby="new-help" title="Start fresh with new devices">New Cable</button>
                 
                 <!-- Hidden descriptions for screen readers -->
                 <div id="check-help" class="sr-only">Verify if your cable wiring is correct</div>
