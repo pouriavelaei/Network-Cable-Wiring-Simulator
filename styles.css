@@ -137,7 +137,7 @@ body.rtl .controls {
     display: flex;
     height: 100%;
     align-items: flex-end;
-    padding: 8px;
+    padding: 25px;
     gap: 3px;
 }
 
