@@ -1,3 +1,72 @@
+/* CSS Variables for Light and Dark Themes */
+:root {
+    /* Light Theme Variables */
+    --bg-gradient-start: #1e3c72;
+    --bg-gradient-end: #2a5298;
+    --container-bg: white;
+    --text-color: #333;
+    --text-color-light: #666;
+    --header-gradient-start: #2196F3;
+    --header-gradient-end: #21CBF3;
+    --header-text: white;
+    --connection-info-bg: #f0f8ff;
+    --connection-info-border: #2196F3;
+    --standard-selector-bg: #f8f9fa;
+    --standard-selector-border: #dee2e6;
+    --standard-label-color: #495057;
+    --standard-label-hover-bg: #e3f2fd;
+    --device-dropdown-bg: white;
+    --device-dropdown-border: #ddd;
+    --pin-gradient-start: #666;
+    --pin-gradient-end: #888;
+    --score-panel-bg: #f8f9fa;
+    --score-panel-border: #e9ecef;
+    --btn-primary-bg: #007bff;
+    --btn-primary-hover: #0056b3;
+    --btn-success-bg: #28a745;
+    --btn-success-hover: #1e7e34;
+    --btn-warning-bg: #ffc107;
+    --btn-warning-hover: #e0a800;
+    --btn-danger-bg: #dc3545;
+    --btn-danger-hover: #c82333;
+    --shadow-color: rgba(0,0,0,0.2);
+    --border-color: #eee;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --bg-gradient-start: #0f0f0f;
+    --bg-gradient-end: #1a1a1a;
+    --container-bg: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-color-light: #b0b0b0;
+    --header-gradient-start: #1565C0;
+    --header-gradient-end: #0277BD;
+    --header-text: white;
+    --connection-info-bg: #3a3a3a;
+    --connection-info-border: #1976D2;
+    --standard-selector-bg: #404040;
+    --standard-selector-border: #555;
+    --standard-label-color: #e0e0e0;
+    --standard-label-hover-bg: #4a4a4a;
+    --device-dropdown-bg: #404040;
+    --device-dropdown-border: #555;
+    --pin-gradient-start: #666;
+    --pin-gradient-end: #888;
+    --score-panel-bg: #3a3a3a;
+    --score-panel-border: #555;
+    --btn-primary-bg: #1976D2;
+    --btn-primary-hover: #1565C0;
+    --btn-success-bg: #388E3C;
+    --btn-success-hover: #2E7D32;
+    --btn-warning-bg: #F57C00;
+    --btn-warning-hover: #EF6C00;
+    --btn-danger-bg: #D32F2F;
+    --btn-danger-hover: #C62828;
+    --shadow-color: rgba(0,0,0,0.5);
+    --border-color: #555;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,11 +75,12 @@
 
 body {
     font-family: 'Arial', 'Tahoma', sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     min-height: 100vh;
     padding: 20px;
     transition: all 0.3s ease;
     overflow-x: hidden;
+    color: var(--text-color);
 }
 
 /* RTL Support for Persian */
@@ -30,17 +100,27 @@ body.rtl .controls {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
+    background: var(--container-bg);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 40px var(--shadow-color);
     overflow: hidden;
 }
 
 .header {
-    background: linear-gradient(45deg, #2196F3, #21CBF3);
-    color: white;
+    background: linear-gradient(45deg, var(--header-gradient-start), var(--header-gradient-end));
+    color: var(--header-text);
     padding: 20px;
     text-align: center;
+    position: relative;
+}
+
+.header nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .game-area {
@@ -64,16 +144,17 @@ body.rtl .controls {
 
 .device-selector h3 {
     margin-bottom: 10px;
-    color: #333;
+    color: var(--text-color);
     font-size: 16px;
 }
 
 .device-dropdown {
     padding: 10px 15px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--device-dropdown-border);
     border-radius: 8px;
     font-size: 14px;
-    background: white;
+    background: var(--device-dropdown-bg);
+    color: var(--text-color);
     cursor: pointer;
     min-width: 120px;
     width: 100%;
@@ -88,18 +169,19 @@ body.rtl .controls {
 .connection-info {
     text-align: center;
     padding: 15px;
-    background: #f0f8ff;
+    background: var(--connection-info-bg);
     border-radius: 10px;
     margin: 20px 0;
-    border: 2px dashed #2196F3;
+    border: 2px dashed var(--connection-info-border);
+    color: var(--text-color);
 }
 
 .standard-selector {
     margin-top: 15px;
     padding: 10px;
-    background: #f8f9fa;
+    background: var(--standard-selector-bg);
     border-radius: 8px;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--standard-selector-border);
     text-align: center;
 }
 
@@ -107,7 +189,7 @@ body.rtl .controls {
     margin: 0 10px;
     cursor: pointer;
     font-weight: 500;
-    color: #495057;
+    color: var(--standard-label-color);
     transition: color 0.3s ease;
     display: inline-block;
     padding: 5px 10px;
@@ -116,8 +198,8 @@ body.rtl .controls {
 }
 
 .standard-selector label:hover {
-    color: #2196F3;
-    background-color: #e3f2fd;
+    color: var(--connection-info-border);
+    background-color: var(--standard-label-hover-bg);
 }
 
 .standard-selector input[type="radio"] {
@@ -257,17 +339,17 @@ body.rtl .standard-selector input[type="radio"] {
 }
 
 .wire-palette {
-    background: #f8f9fa;
+    background: var(--score-panel-bg);
     border-radius: 15px;
     padding: 20px;
     margin: 30px 0;
-    border: 2px solid #e9ecef;
+    border: 2px solid var(--score-panel-border);
 }
 
 .wire-palette h3 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--text-color);
     font-size: 18px;
 }
 
@@ -371,29 +453,29 @@ body.rtl .standard-selector input[type="radio"] {
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    background: linear-gradient(45deg, var(--btn-primary-bg), var(--btn-primary-hover));
     color: white;
 }
 
 .btn-success {
-    background: linear-gradient(45deg, #4CAF50, #45a049);
+    background: linear-gradient(45deg, var(--btn-success-bg), var(--btn-success-hover));
     color: white;
 }
 
 .btn-warning {
-    background: linear-gradient(45deg, #FF9800, #F57C00);
+    background: linear-gradient(45deg, var(--btn-warning-bg), var(--btn-warning-hover));
     color: white;
 }
 
 .btn-danger {
-    background: linear-gradient(45deg, #f44336, #d32f2f);
+    background: linear-gradient(45deg, var(--btn-danger-bg), var(--btn-danger-hover));
     color: white;
 }
 
 .score-panel {
     display: flex;
     justify-content: space-around;
-    background: #f8f9fa;
+    background: var(--score-panel-bg);
     border-radius: 10px;
     padding: 20px;
     margin: 20px 0;
@@ -426,9 +508,9 @@ body.rtl .standard-selector input[type="radio"] {
     text-align: center;
     margin: 20px 0;
     padding: 20px;
-    background: #f0f8ff;
+    background: var(--connection-info-bg);
     border-radius: 15px;
-    border: 2px dashed #2196F3;
+    border: 2px dashed var(--connection-info-border);
 }
 
 .difficulty-buttons {
@@ -490,9 +572,6 @@ body.rtl .standard-selector input[type="radio"] {
 
 /* Sound Effects Toggle */
 .sound-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     background: rgba(255,255,255,0.2);
     border: 2px solid rgba(255,255,255,0.3);
     border-radius: 50px;
@@ -500,9 +579,26 @@ body.rtl .standard-selector input[type="radio"] {
     color: white;
     cursor: pointer;
     transition: all 0.3s;
+    font-size: 12px;
 }
 
 .sound-toggle:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 8px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 12px;
+}
+
+.theme-toggle:hover {
     background: rgba(255,255,255,0.3);
 }
 
@@ -562,12 +658,12 @@ body.rtl .standard-selector input[type="radio"] {
 .score-value {
     font-size: 24px;
     font-weight: bold;
-    color: #2196F3;
+    color: var(--header-gradient-start);
 }
 
 .score-label {
     font-size: 12px;
-    color: #666;
+    color: var(--text-color-light);
     margin-top: 5px;
 }
 
@@ -719,18 +815,21 @@ body.rtl .standard-selector input[type="radio"] {
     }
     
     .language-toggle,
-    .sound-toggle {
+    .sound-toggle,
+    .theme-toggle {
         font-size: 10px;
         padding: 6px 12px;
-        top: 10px;
     }
     
     .language-toggle {
+        top: 10px;
         left: 10px;
     }
     
-    .sound-toggle {
+    .header nav {
+        top: 10px;
         right: 10px;
+        gap: 5px;
     }
     
     .game-area {
@@ -1005,7 +1104,8 @@ body.rtl .standard-selector input[type="radio"] {
 
 /* Button accessibility */
 .language-toggle,
-.sound-toggle {
+.sound-toggle,
+.theme-toggle {
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
@@ -1018,8 +1118,10 @@ body.rtl .standard-selector input[type="radio"] {
 
 .language-toggle:hover,
 .sound-toggle:hover,
+.theme-toggle:hover,
 .language-toggle:focus,
-.sound-toggle:focus {
+.sound-toggle:focus,
+.theme-toggle:focus {
     background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
 }
@@ -1037,7 +1139,27 @@ body.rtl .standard-selector input[type="radio"] {
 .score-label,
 .timer-label {
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
+}
+
+/* Update text colors for dark mode */
+.difficulty-selector h3,
+.wire-palette h3,
+.device-selector h3,
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+}
+
+.cable-connection div {
+    color: var(--text-color-light);
+}
+
+.github-link p {
+    color: var(--text-color-light) !important;
+}
+
+.github-link a {
+    color: var(--header-gradient-start) !important;
 }
 
 /* Improved button states */

@@ -1,96 +1,52 @@
-/**
- * @fileoverview Network Cable Wiring Simulator - Interactive Educational Tool
- * @description A comprehensive educational simulator for learning RJ45 cable wiring standards
- * including T568A, T568B, and CrossOver configurations with multi-language support.
- * @author Pouria Velaei
- * @version 1.0.0
- * @license GPL-3.0
- */
-
-/**
- * Main Network Cable Wiring Simulator Class
- * @class NetworkCableSimulator
- * @description Handles all game logic, UI interactions, and educational features
- * for learning network cable wiring standards
- */
 class NetworkCableSimulator {
-    /**
-     * Initialize the Network Cable Simulator
-     * @constructor
-     * @description Sets up initial game state, wire colors, standards, and binds events
-     */
-    constructor() {
-        /** @type {number} Current player score */
-        this.score = 0;
-        
-        /** @type {number} Number of check attempts made */
-        this.attempts = 0;
-        
-        /** @type {Object} Wire connections for both sockets */
-        this.connections = {
-            socket1: {},
-            socket2: {}
-        };
-        
-        /** @type {string} Current UI language ('en' or 'fa') */
-        this.currentLanguage = 'en';
-        
-        /** @type {Object} Translation strings for multi-language support */
-        this.translations = this.initTranslations();
-        
-        /** @type {string} Current difficulty level ('easy', 'medium', 'hard') */
-        this.difficulty = 'easy';
-        
-        /** @type {number} Time limit in seconds (0 for no limit) */
-        this.timeLimit = 0;
-        
-        /** @type {number} Remaining time in seconds */
-        this.timeRemaining = 0;
-        
-        /** @type {?number} Timer interval ID */
-        this.timer = null;
-        
-        /** @type {boolean} Whether sound effects are enabled */
-        this.soundEnabled = true;
-        
-        /** @type {number} Highest score achieved */
-        this.highScore = localStorage.getItem('networkCableHighScore') || 0;
-        
-        /** @type {Object} Wire color definitions with CSS gradients */
-        this.wireColors = {
-            'White-Orange': { class: 'wire-white-orange', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #ff8c00 50%, #ff8c00 100%)' },
-            'Orange': { class: 'wire-orange', cssVar: 'linear-gradient(135deg, #ff8c00, #ff6600)' },
-            'White-Green': { class: 'wire-white-green', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #32cd32 50%, #32cd32 100%)' },
-            'Blue': { class: 'wire-blue', cssVar: 'linear-gradient(135deg, #0066ff, #0044cc)' },
-            'White-Blue': { class: 'wire-white-blue', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #0066ff 50%, #0066ff 100%)' },
-            'Green': { class: 'wire-green', cssVar: 'linear-gradient(135deg, #32cd32, #228b22)' },
-            'White-Brown': { class: 'wire-white-brown', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #8b4513 50%, #8b4513 100%)' },
-            'Brown': { class: 'wire-brown', cssVar: 'linear-gradient(135deg, #8b4513, #654321)' }
-        };
+            constructor() {
+                this.score = 0;
+                this.attempts = 0;
+                this.connections = {
+                    socket1: {},
+                    socket2: {}
+                };
+                
+                // Language support
+                this.currentLanguage = 'en';
+                this.translations = this.initTranslations();
+                
+                // New properties for enhanced features
+                this.difficulty = 'easy';
+                this.timeLimit = 0;
+                this.timeRemaining = 0;
+                this.timer = null;
+                this.soundEnabled = true;
+                this.highScore = localStorage.getItem('networkCableHighScore') || 0;
+                
+                // Dark mode support
+                this.isDarkMode = localStorage.getItem('networkCableDarkMode') === 'true';
+                
+                this.wireColors = {
+                    'White-Orange': { class: 'wire-white-orange', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #ff8c00 50%, #ff8c00 100%)' },
+                    'Orange': { class: 'wire-orange', cssVar: 'linear-gradient(135deg, #ff8c00, #ff6600)' },
+                    'White-Green': { class: 'wire-white-green', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #32cd32 50%, #32cd32 100%)' },
+                    'Blue': { class: 'wire-blue', cssVar: 'linear-gradient(135deg, #0066ff, #0044cc)' },
+                    'White-Blue': { class: 'wire-white-blue', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #0066ff 50%, #0066ff 100%)' },
+                    'Green': { class: 'wire-green', cssVar: 'linear-gradient(135deg, #32cd32, #228b22)' },
+                    'White-Brown': { class: 'wire-white-brown', cssVar: 'linear-gradient(135deg, #fff 0%, #fff 50%, #8b4513 50%, #8b4513 100%)' },
+                    'Brown': { class: 'wire-brown', cssVar: 'linear-gradient(135deg, #8b4513, #654321)' }
+                };
 
-        /** @type {Object} Wiring standards for different cable types */
-        this.standards = {
-            T568A: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown'],
-            T568B: ['White-Orange', 'Orange', 'White-Green', 'Blue', 'White-Blue', 'Green', 'White-Brown', 'Brown'],
-            CrossOver: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown']
-        };
-        
-        /** @type {string} Currently selected standard for straight-through cables */
-        this.selectedStandard = 'T568B';
+                this.standards = {
+                    T568A: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown'],
+                    T568B: ['White-Orange', 'Orange', 'White-Green', 'Blue', 'White-Blue', 'Green', 'White-Brown', 'Brown'],
+                    CrossOver: ['White-Green', 'Green', 'White-Orange', 'Blue', 'White-Blue', 'Orange', 'White-Brown', 'Brown']
+                };
+                
+                // Current selected standard for straight-through cables
+                this.selectedStandard = 'T568B';
 
-        /** @type {?string} Currently dragged wire type */
-        this.currentDraggedWire = null;
-        
-        this.init();
-    }
+                this.currentDraggedWire = null;
+                this.init();
+            }
 
-    /**
-     * Initialize translation strings for multi-language support
-     * @method initTranslations
-     * @returns {Object} Translation object with English and Persian strings
-     * @description Sets up all UI text translations for English and Persian languages
-     */
-    initTranslations() {
+            initTranslations() {
                 return {
                     en: {
                         // Header
@@ -100,6 +56,7 @@ class NetworkCableSimulator {
                         // Language Toggle
                         languageToggle: "🌐 فارسی",
                         soundToggle: "🔊 Sound",
+                        themeToggle: "🌙 Dark",
                         
                         // Difficulty
                         difficultyTitle: "Select Game Level",
@@ -201,6 +158,7 @@ class NetworkCableSimulator {
                         // Language Toggle
                         languageToggle: "🌐 English",
                         soundToggle: "🔊 صدا",
+                        themeToggle: "🌙 تاریک",
                         
                         // Difficulty
                         difficultyTitle: "سطح بازی را انتخاب کنید",
@@ -297,11 +255,6 @@ class NetworkCableSimulator {
                 };
             }
 
-            /**
-             * Initialize the simulator and set up the game
-             * @method init
-             * @description Sets up translations, binds events, updates UI, and creates initial wire palette
-             */
             init() {
                 this.translations = this.initTranslations();
                 this.currentLanguage = 'en'; // Default to English
@@ -311,14 +264,8 @@ class NetworkCableSimulator {
                 this.updateHighScore();
                 this.createInitialWirePalette();
                 this.updateLanguage();
+                this.applyTheme();
             }
-
-            /**
-             * Update UI language and all text elements
-             * @method updateLanguage
-             * @description Updates all UI text elements to the current language
-             * and sets appropriate text direction (LTR/RTL)
-             */
 
             updateLanguage() {
                 const t = this.translations[this.currentLanguage];
@@ -330,6 +277,7 @@ class NetworkCableSimulator {
                 // Update language toggle
                 document.getElementById('languageToggle').textContent = t.languageToggle;
                 document.getElementById('soundToggle').textContent = t.soundToggle;
+                document.getElementById('themeToggle').textContent = t.themeToggle;
                 
                 // Update difficulty section
                 document.getElementById('difficultyTitle').textContent = t.difficultyTitle;
@@ -385,6 +333,7 @@ class NetworkCableSimulator {
                 this.updateDeviceNames();
                 this.updateConnectionInfo();
                 this.updateWireLabels();
+                this.updateThemeToggleText();
             }
 
             updateWireLabels() {
@@ -471,6 +420,9 @@ class NetworkCableSimulator {
             bindEvents() {
                 // Language toggle
                 document.getElementById('languageToggle').addEventListener('click', () => this.switchLanguage());
+                
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
                 
                 // تغییر دستگاه‌ها
                 document.getElementById('device1').addEventListener('change', () => this.updateConnectionInfo());
@@ -609,15 +561,6 @@ class NetworkCableSimulator {
                 }
             }
 
-            /**
-             * Place a wire on a specific pin
-             * @method placeWire
-             * @param {string} socket - Socket ID ('socket1' or 'socket2')
-             * @param {string|number} pin - Pin number (1-8)
-             * @param {string} wireType - Type of wire being placed
-             * @description Places a wire on the specified pin, updates visuals,
-             * plays sound effect, and updates game state
-             */
             placeWire(socket, pin, wireType) {
                 const pinElement = document.querySelector(`#${socket} .pin[data-pin="${pin}"]`);
                 const wireColor = this.wireColors[wireType];
@@ -914,13 +857,6 @@ class NetworkCableSimulator {
                 this.currentStandard = standard;
             }
 
-            /**
-             * Check the current cable wiring against standards
-             * @method checkCable
-             * @description Validates current wire connections against the appropriate standard,
-             * calculates score, provides feedback, and handles difficulty bonuses
-             * @returns {void}
-             */
             checkCable() {
                 this.attempts++;
                 let correctConnections = 0;
@@ -1116,6 +1052,31 @@ class NetworkCableSimulator {
                 }
                 
                 document.getElementById('correctConnections').textContent = `${correct}/${total}`;
+            }
+
+            toggleTheme() {
+                this.isDarkMode = !this.isDarkMode;
+                localStorage.setItem('networkCableDarkMode', this.isDarkMode);
+                this.applyTheme();
+                this.updateThemeToggleText();
+            }
+
+            applyTheme() {
+                if (this.isDarkMode) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+                this.updateThemeToggleText();
+            }
+
+            updateThemeToggleText() {
+                const themeToggle = document.getElementById('themeToggle');
+                if (this.currentLanguage === 'fa') {
+                    themeToggle.textContent = this.isDarkMode ? '☀️ روشن' : '🌙 تاریک';
+                } else {
+                    themeToggle.textContent = this.isDarkMode ? '☀️ Light' : '🌙 Dark';
+                }
             }
         }
 
